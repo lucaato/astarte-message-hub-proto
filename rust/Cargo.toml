@@ -7,6 +7,7 @@
 [package]
 name = "astarte-message-hub-proto-builder"
 version = "0.1.0"
+description ="Astarte message hub protocol buffers builder for Rust"
 
 [workspace]
 resolver = "2"
@@ -14,12 +15,15 @@ members = [
     "astarte-message-hub-proto"	
 ]
 
+[workspace.package]
+edition = "2021"
+license = "Apache-2.0"
+rust-version = "1.66.1"
+
 [workspace.dependencies]
 tonic = "0.8.2"
-
-[dependencies]
-pbjson-types = "0.5"
 prost = "0.11.3"
+pbjson-types = "0.5"
 
 [build-dependencies]
 tonic-build = "0.8.2" 
