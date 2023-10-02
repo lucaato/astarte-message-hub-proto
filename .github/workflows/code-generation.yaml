@@ -93,7 +93,7 @@ jobs:
         toolchain: 1.66.1
         override: true
     - name: Remove Rust old code
-      run: (! test -d ./astarte-message-hub-proto/src/astarteplatform.msghub.rs) || rm ./astarte-message-hub-proto/src/astarteplatform.msghub.rs
+      run: (! test -f ./astarte-message-hub-proto/src/astarteplatform.msghub.rs) || rm ./astarte-message-hub-proto/src/astarteplatform.msghub.rs
       working-directory: ./rust
     - name: Generate Rust code with cargo build
       run: cargo build
