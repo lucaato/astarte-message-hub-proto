@@ -229,54 +229,64 @@ pub struct InterfacesName {
     #[prost(string, repeated, tag = "1")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///
+/// A message representing the property value associated to a certain interface and path.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
+    /// Property path.
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
+    /// Astarte data.
     #[prost(message, optional, tag = "2")]
     pub value: ::core::option::Option<AstarteDataTypeIndividual>,
 }
-///
+/// A message containing all the properties values and information associated to a given astarte interface.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterfaceProperties {
+    /// Interface ownership.
     #[prost(enumeration = "Ownership", tag = "1")]
     pub ownership: i32,
+    /// Interface major version.
     #[prost(uint32, tag = "2")]
     pub version_major: u32,
+    /// A list of Properties values.
     #[prost(message, repeated, tag = "3")]
     pub properties: ::prost::alloc::vec::Vec<Property>,
 }
-///
+/// This message is the response to the GetProperties rpc.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPropertiesResponse {
-    /// Map interface names to interface property data
+    /// Map interface names to interface property data.
     #[prost(map = "string, message", tag = "1")]
     pub interface_properties: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         InterfaceProperties,
     >,
 }
-///
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetPropertyRequest {
-    #[prost(string, tag = "1")]
-    pub interface_name: ::prost::alloc::string::String,
-    #[prost(string, tag = "2")]
-    pub path: ::prost::alloc::string::String,
-}
-///
+/// This message is the request to the GetAllProperties rpc.
+/// If the ownership is not specified, all the interfaces are retrieved, both device and server owned.
+/// Otherwise, only the interfaces with the specified interfaces are retrieved.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAllPropertiesRequest {
+    /// Optional field representing the ownership of the interface to retrieve.
     #[prost(enumeration = "Ownership", optional, tag = "1")]
     pub ownership: ::core::option::Option<i32>,
 }
-///
+/// This message is the response to the GetProperty rpc.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPropertyRequest {
+    /// Interface name.
+    #[prost(string, tag = "1")]
+    pub interface_name: ::prost::alloc::string::String,
+    /// Property path.
+    #[prost(string, tag = "2")]
+    pub path: ::prost::alloc::string::String,
+}
+/// Enum representing an Astarte interface ownership.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Ownership {
@@ -514,7 +524,7 @@ pub mod message_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Get properties associated with passed interfaces
+        /// Get properties associated with the passed interfaces.
         pub async fn get_properties(
             &mut self,
             request: impl tonic::IntoRequest<super::InterfacesName>,
@@ -542,7 +552,7 @@ pub mod message_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Get all interfaces, or interfaces of the specified ownership
+        /// Get all the properties, allowing also filtering by interface ownership.
         pub async fn get_all_properties(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAllPropertiesRequest>,
@@ -573,7 +583,7 @@ pub mod message_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Get a property defined by the passed interface and path
+        /// Get a property defined by the passed interface and path.
         pub async fn get_property(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPropertyRequest>,
@@ -639,7 +649,7 @@ pub mod message_hub_server {
             &self,
             request: tonic::Request<super::InterfacesName>,
         ) -> std::result::Result<tonic::Response<::pbjson_types::Empty>, tonic::Status>;
-        /// Get properties associated with passed interfaces
+        /// Get properties associated with the passed interfaces.
         async fn get_properties(
             &self,
             request: tonic::Request<super::InterfacesName>,
@@ -647,7 +657,7 @@ pub mod message_hub_server {
             tonic::Response<super::GetPropertiesResponse>,
             tonic::Status,
         >;
-        /// Get all interfaces, or interfaces of the specified ownership
+        /// Get all the properties, allowing also filtering by interface ownership.
         async fn get_all_properties(
             &self,
             request: tonic::Request<super::GetAllPropertiesRequest>,
@@ -655,7 +665,7 @@ pub mod message_hub_server {
             tonic::Response<super::GetPropertiesResponse>,
             tonic::Status,
         >;
-        /// Get a property defined by the passed interface and path
+        /// Get a property defined by the passed interface and path.
         async fn get_property(
             &self,
             request: tonic::Request<super::GetPropertyRequest>,
