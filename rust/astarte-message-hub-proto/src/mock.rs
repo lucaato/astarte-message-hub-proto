@@ -1,57 +1,71 @@
 use mockall::mock;
 
-pub type AttachStream<T> = futures::stream::Iter<std::vec::IntoIter<Result<T, tonic::Status>>>;
-
 mock! {
     pub MessageHubClient<T: 'static> {
-         pub async fn attach(
+        pub async fn attach<R>(
             &mut self,
-            request: tonic::Request<crate::Node>,
+            request: R,
         ) -> std::result::Result<
-            tonic::Response<AttachStream<crate::MessageHubEvent>>,
+            tonic::Response<tonic::codec::Streaming<crate::MessageHubEvent>>,
             tonic::Status,
-        >;
+        >
+        where
+            R: tonic::IntoRequest<crate::Node> + 'static;
 
-        pub async fn send(
+        pub async fn send<R>(
             &mut self,
-            request: tonic::Request<crate::AstarteMessage>,
-        ) -> std::result::Result<tonic::Response<::pbjson_types::Empty>, tonic::Status>;
+            request: R,
+        ) -> std::result::Result<tonic::Response<::pbjson_types::Empty>, tonic::Status>
+        where
+            R: tonic::IntoRequest<crate::AstarteMessage> + 'static;
 
-        pub async fn detach(
+        pub async fn detach<R>(
             &mut self,
-            request: tonic::Request<::pbjson_types::Empty>,
-        ) -> std::result::Result<tonic::Response<::pbjson_types::Empty>, tonic::Status>;
+            request: R,
+        ) -> std::result::Result<tonic::Response<::pbjson_types::Empty>, tonic::Status>
+        where
+            R: tonic::IntoRequest<::pbjson_types::Empty> + 'static;
 
-        pub async fn add_interfaces(
+        pub async fn add_interfaces<R>(
             &mut self,
-            request: tonic::Request<crate::InterfacesJson>,
-        ) -> std::result::Result<tonic::Response<::pbjson_types::Empty>, tonic::Status>;
+            request: R,
+        ) -> std::result::Result<tonic::Response<::pbjson_types::Empty>, tonic::Status>
+        where
+            R: tonic::IntoRequest<crate::InterfacesJson> + 'static;
 
-        pub async fn remove_interfaces(
+        pub async fn remove_interfaces<R>(
             &mut self,
-            request: tonic::Request<crate::InterfacesName>,
-        ) -> std::result::Result<tonic::Response<::pbjson_types::Empty>, tonic::Status>;
+            request: R,
+        ) -> std::result::Result<tonic::Response<::pbjson_types::Empty>, tonic::Status>
+        where
+            R: tonic::IntoRequest<crate::InterfacesName> + 'static;
 
-        pub async fn get_properties(
+        pub async fn get_properties<R>(
             &mut self,
-            request: tonic::Request<crate::InterfacesName>,
+            request: R,
         ) -> std::result::Result<
             tonic::Response<crate::StoredProperties>,
             tonic::Status,
-        >;
+        >
+        where
+            R: tonic::IntoRequest<crate::InterfacesName> + 'static;
 
-        pub async fn get_all_properties(
+        pub async fn get_all_properties<R>(
             &mut self,
-            request: tonic::Request<crate::StoredPropertiesFilter>,
+            request: R,
         ) -> std::result::Result<
             tonic::Response<crate::StoredProperties>,
             tonic::Status,
-        >;
+        >
+        where
+            R: tonic::IntoRequest<crate::StoredPropertiesFilter> + 'static;
 
-        pub async fn get_property(
+        pub async fn get_property<R>(
             &mut self,
-            request: tonic::Request<crate::PropertyIdentifier>,
-        ) -> std::result::Result<tonic::Response<crate::Property>, tonic::Status>;
+            request: R,
+        ) -> std::result::Result<tonic::Response<crate::Property>, tonic::Status>
+        where
+            R: tonic::IntoRequest<crate::PropertyIdentifier> + 'static;
     }
 
     impl<T: 'static> Clone for MessageHubClient<T> {
