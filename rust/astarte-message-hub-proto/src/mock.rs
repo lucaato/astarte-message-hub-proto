@@ -67,8 +67,4 @@ mock! {
         where
             R: tonic::IntoRequest<crate::PropertyIdentifier> + 'static;
     }
-
-    impl<T: 'static> Clone for MessageHubClient<T> {
-        fn clone(&self) -> Self;
-    }
 }
